@@ -84,6 +84,34 @@
       </tags>
   </entry>
   <entry>
+    <title>JWT</title>
+    <url>/2025/03/21/projects/JWT/</url>
+    <content><![CDATA[<h1 id="JWT（JSON-Web令牌）"><a href="#JWT（JSON-Web令牌）" class="headerlink" title="JWT（JSON Web令牌）"></a>JWT（JSON Web令牌）</h1><p>参考：<a href="https://jwt.p2hp.com/introduction%EF%BC%8Chttps://blog.csdn.net/Top_L398/article/details/109361680">https://jwt.p2hp.com/introduction，https://blog.csdn.net/Top_L398/article/details/109361680</a></p>
+<h2 id="01-什么是JWT？"><a href="#01-什么是JWT？" class="headerlink" title="01 什么是JWT？"></a>01 什么是JWT？</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><blockquote>
+<p>JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT可以使用密钥（HMAC算法）或RSA或ECDA的公钥&#x2F;私钥对进行签名。</p>
+</blockquote>
+<p>即通过JSON形式作为Web应用中的令牌，从而在各方之间安全地将信息作为JSON对象传输，传输过程中还可以完成数据加密、签名等  </p>
+<h3 id="2-JWT结构"><a href="#2-JWT结构" class="headerlink" title="2. JWT结构"></a>2. JWT结构</h3><p>JWT由三部分组成，由点’.’分隔，形如xxxxx.yyyyy.zzzzz</p>
+<ol>
+<li>Header, 标头：包括令牌的类型和使用的签名算法（如RSA)<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS256&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span> <span class="string">&quot;JWT&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>Payload, 有效荷载</li>
+<li>Signature, 签名</li>
+</ol>
+<h2 id="02-JWT的使用场景"><a href="#02-JWT的使用场景" class="headerlink" title="02 JWT的使用场景"></a>02 JWT的使用场景</h2><h3 id="1-授权"><a href="#1-授权" class="headerlink" title="1. 授权"></a>1. 授权</h3><ol>
+<li>授权是JWT使用最广泛的场景，用户登录后的每个请求都将包含JWT，允许用户访问该令牌允许的路由、服务和资源。单点登录就使用了JWT，它开销很小并且可以轻松地跨域使用。</li>
+</ol>
+<ul>
+<li>补充：单点登录（SSO)是一种用户身份验证过程，允许用户在多个应用程序或服务之间无缝访问，无需为每个应用单独登录。 比如：一个公司采取单点登录系统，提供了邮件系统、项目平台、文档平台，实现<br>单点登录后，先访问公司的单点登录门户网站注册并登录，之后当你希望登录邮件系统时，会被重定向到单点登录门户，会自动识别身份无需重复登录。</li>
+</ul>
+<h3 id="2-信息交换"><a href="#2-信息交换" class="headerlink" title="2. 信息交换"></a>2. 信息交换</h3><ol>
+<li>JWT是在各方之间安全传输信息的好方法。因为 JWT 可以签名——例如，使用公钥&#x2F;私钥对——你可以确定发送者是他们所说的人。此外，由于签名是使用标头和有效负载计算的，因此您还可以验证内容是否未被篡改.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>项目开发</category>
+      </categories>
+  </entry>
+  <entry>
     <title>JPA</title>
     <url>/2025/03/21/projects/JPA/</url>
     <content><![CDATA[<h1 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h1><h2 id="01-CRUD操作的实现"><a href="#01-CRUD操作的实现" class="headerlink" title="01 CRUD操作的实现"></a>01 CRUD操作的实现</h2><h3 id="1-支持动态查询"><a href="#1-支持动态查询" class="headerlink" title="1.支持动态查询"></a>1.支持动态查询</h3><blockquote>
@@ -119,34 +147,6 @@
       <categories>
         <category>项目开发</category>
         <category>JPA</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>JWT</title>
-    <url>/2025/03/21/projects/JWT/</url>
-    <content><![CDATA[<h1 id="JWT（JSON-Web令牌）"><a href="#JWT（JSON-Web令牌）" class="headerlink" title="JWT（JSON Web令牌）"></a>JWT（JSON Web令牌）</h1><p>参考：<a href="https://jwt.p2hp.com/introduction%EF%BC%8Chttps://blog.csdn.net/Top_L398/article/details/109361680">https://jwt.p2hp.com/introduction，https://blog.csdn.net/Top_L398/article/details/109361680</a></p>
-<h2 id="01-什么是JWT？"><a href="#01-什么是JWT？" class="headerlink" title="01 什么是JWT？"></a>01 什么是JWT？</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><blockquote>
-<p>JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT可以使用密钥（HMAC算法）或RSA或ECDA的公钥&#x2F;私钥对进行签名。</p>
-</blockquote>
-<p>即通过JSON形式作为Web应用中的令牌，从而在各方之间安全地将信息作为JSON对象传输，传输过程中还可以完成数据加密、签名等  </p>
-<h3 id="2-JWT结构"><a href="#2-JWT结构" class="headerlink" title="2. JWT结构"></a>2. JWT结构</h3><p>JWT由三部分组成，由点’.’分隔，形如xxxxx.yyyyy.zzzzz</p>
-<ol>
-<li>Header, 标头：包括令牌的类型和使用的签名算法（如RSA)<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS256&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span> <span class="string">&quot;JWT&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
-<li>Payload, 有效荷载</li>
-<li>Signature, 签名</li>
-</ol>
-<h2 id="02-JWT的使用场景"><a href="#02-JWT的使用场景" class="headerlink" title="02 JWT的使用场景"></a>02 JWT的使用场景</h2><h3 id="1-授权"><a href="#1-授权" class="headerlink" title="1. 授权"></a>1. 授权</h3><ol>
-<li>授权是JWT使用最广泛的场景，用户登录后的每个请求都将包含JWT，允许用户访问该令牌允许的路由、服务和资源。单点登录就使用了JWT，它开销很小并且可以轻松地跨域使用。</li>
-</ol>
-<ul>
-<li>补充：单点登录（SSO)是一种用户身份验证过程，允许用户在多个应用程序或服务之间无缝访问，无需为每个应用单独登录。 比如：一个公司采取单点登录系统，提供了邮件系统、项目平台、文档平台，实现<br>单点登录后，先访问公司的单点登录门户网站注册并登录，之后当你希望登录邮件系统时，会被重定向到单点登录门户，会自动识别身份无需重复登录。</li>
-</ul>
-<h3 id="2-信息交换"><a href="#2-信息交换" class="headerlink" title="2. 信息交换"></a>2. 信息交换</h3><ol>
-<li>JWT是在各方之间安全传输信息的好方法。因为 JWT 可以签名——例如，使用公钥&#x2F;私钥对——你可以确定发送者是他们所说的人。此外，由于签名是使用标头和有效负载计算的，因此您还可以验证内容是否未被篡改.</li>
-</ol>
-]]></content>
-      <categories>
-        <category>项目开发</category>
       </categories>
   </entry>
   <entry>
