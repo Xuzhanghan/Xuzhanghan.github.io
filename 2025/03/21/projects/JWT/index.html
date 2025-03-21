@@ -19,26 +19,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"xuzhanghan.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="NJU">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Han&#39;s Blog">
-<meta property="og:url" content="https://xuzhanghan.github.io/tags/prefixSum/index.html">
+    <meta name="description" content="JWT（JSON Web令牌）参考：https:&#x2F;&#x2F;jwt.p2hp.com&#x2F;introduction，https:&#x2F;&#x2F;blog.csdn.net&#x2F;Top_L398&#x2F;article&#x2F;details&#x2F;109361680 01 什么是JWT？1.定义 JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JWT">
+<meta property="og:url" content="https://xuzhanghan.github.io/2025/03/21/projects/JWT/index.html">
 <meta property="og:site_name" content="Han&#39;s Blog">
-<meta property="og:description" content="NJU">
+<meta property="og:description" content="JWT（JSON Web令牌）参考：https:&#x2F;&#x2F;jwt.p2hp.com&#x2F;introduction，https:&#x2F;&#x2F;blog.csdn.net&#x2F;Top_L398&#x2F;article&#x2F;details&#x2F;109361680 01 什么是JWT？1.定义 JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-21T06:25:49.000Z">
+<meta property="article:modified_time" content="2025-03-21T07:00:28.765Z">
 <meta property="article:author" content="Xuzhanghan">
 <meta property="article:tag" content="NJU SE">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://xuzhanghan.github.io/tags/prefixSum/">
+<link rel="canonical" href="https://xuzhanghan.github.io/2025/03/21/projects/JWT/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/prefixSum/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://xuzhanghan.github.io/2025/03/21/projects/JWT/","path":"2025/03/21/projects/JWT/","title":"JWT"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: prefixSum | Han's Blog</title>
+<title>JWT | Han's Blog</title>
   
 
 
@@ -125,7 +127,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -138,6 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JWT%EF%BC%88JSON-Web%E4%BB%A4%E7%89%8C%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">JWT（JSON Web令牌）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-%E4%BB%80%E4%B9%88%E6%98%AFJWT%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">01 什么是JWT？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-JWT%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. JWT结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-JWT%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.</span> <span class="nav-text">02 JWT的使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%8E%88%E6%9D%83"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BF%A1%E6%81%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 信息交换</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -187,50 +190,126 @@
 
     </div>
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">prefixSum
-          <small>标签</small>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/21/projects/JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
+      <meta itemprop="name" content="Xuzhanghan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Han's Blog">
+      <meta itemprop="description" content="NJU">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JWT | Han's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JWT
         </h1>
-      </div>
 
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
+
+      <time title="创建时间：2025-03-21 14:25:49 / 修改时间：15:00:28" itemprop="dateCreated datePublished" datetime="2025-03-21T14:25:49+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">项目开发</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="JWT（JSON-Web令牌）"><a href="#JWT（JSON-Web令牌）" class="headerlink" title="JWT（JSON Web令牌）"></a>JWT（JSON Web令牌）</h1><p>参考：<a target="_blank" rel="noopener" href="https://jwt.p2hp.com/introduction%EF%BC%8Chttps://blog.csdn.net/Top_L398/article/details/109361680">https://jwt.p2hp.com/introduction，https://blog.csdn.net/Top_L398/article/details/109361680</a></p>
+<h2 id="01-什么是JWT？"><a href="#01-什么是JWT？" class="headerlink" title="01 什么是JWT？"></a>01 什么是JWT？</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><blockquote>
+<p>JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT可以使用密钥（HMAC算法）或RSA或ECDA的公钥&#x2F;私钥对进行签名。</p>
+</blockquote>
+<p>即通过JSON形式作为Web应用中的令牌，从而在各方之间安全地将信息作为JSON对象传输，传输过程中还可以完成数据加密、签名等  </p>
+<h3 id="2-JWT结构"><a href="#2-JWT结构" class="headerlink" title="2. JWT结构"></a>2. JWT结构</h3><p>JWT由三部分组成，由点’.’分隔，形如xxxxx.yyyyy.zzzzz</p>
+<ol>
+<li>Header, 标头：包括令牌的类型和使用的签名算法（如RSA)<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS256&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span> <span class="string">&quot;JWT&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>Payload, 有效荷载</li>
+<li>Signature, 签名</li>
+</ol>
+<h2 id="02-JWT的使用场景"><a href="#02-JWT的使用场景" class="headerlink" title="02 JWT的使用场景"></a>02 JWT的使用场景</h2><h3 id="1-授权"><a href="#1-授权" class="headerlink" title="1. 授权"></a>1. 授权</h3><ol>
+<li>授权是JWT使用最广泛的场景，用户登录后的每个请求都将包含JWT，允许用户访问该令牌允许的路由、服务和资源。单点登录就使用了JWT，它开销很小并且可以轻松地跨域使用。</li>
+</ol>
+<ul>
+<li>补充：单点登录（SSO)是一种用户身份验证过程，允许用户在多个应用程序或服务之间无缝访问，无需为每个应用单独登录。 比如：一个公司采取单点登录系统，提供了邮件系统、项目平台、文档平台，实现<br>单点登录后，先访问公司的单点登录门户网站注册并登录，之后当你希望登录邮件系统时，会被重定向到单点登录门户，会自动识别身份无需重复登录。</li>
+</ul>
+<h3 id="2-信息交换"><a href="#2-信息交换" class="headerlink" title="2. 信息交换"></a>2. 信息交换</h3><ol>
+<li>JWT是在各方之间安全传输信息的好方法。因为 JWT 可以签名——例如，使用公钥&#x2F;私钥对——你可以确定发送者是他们所说的人。此外，由于签名是使用标头和有效负载计算的，因此您还可以验证内容是否未被篡改.</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-03-17T16:39:28+08:00"
-              content="2025-03-17">
-          03-17
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/03/17/algorithms/PrefixSum/" itemprop="url">
-            <span itemprop="name">前缀和</span>
-          </a>
-      </div>
+    <footer class="post-footer">
 
-      
-    </header>
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/17/my-study/llm-copyright-and-compilence/review/" rel="prev" title="文献综述">
+                  <i class="fa fa-angle-left"></i> 文献综述
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/21/projects/JPA/" rel="next" title="JPA">
+                  JPA <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
+
 
 </div>
   </main>

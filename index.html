@@ -152,13 +152,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -197,7 +197,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/17/PrefixSum/">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/21/projects/JPA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
@@ -215,7 +215,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/03/17/PrefixSum/" class="post-title-link" itemprop="url">前缀和</a>
+          <a href="/2025/03/21/projects/JPA/" class="post-title-link" itemprop="url">JPA</a>
         </h2>
 
         <div class="post-meta-container">
@@ -227,7 +227,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-03-17 16:39:28 / 修改时间：20:10:36" itemprop="dateCreated datePublished" datetime="2025-03-17T16:39:28+08:00">2025-03-17</time>
+      <time title="创建时间：2025-03-21 16:56:23 / 修改时间：17:50:39" itemprop="dateCreated datePublished" datetime="2025-03-21T16:56:23+08:00">2025-03-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -235,7 +235,313 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/algorithm/" itemprop="url" rel="index"><span itemprop="name">algorithm</span></a>
+          <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">项目开发</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/JPA/" itemprop="url" rel="index"><span itemprop="name">JPA</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h1><h2 id="01-CRUD操作的实现"><a href="#01-CRUD操作的实现" class="headerlink" title="01 CRUD操作的实现"></a>01 CRUD操作的实现</h2><h3 id="1-支持动态查询"><a href="#1-支持动态查询" class="headerlink" title="1.支持动态查询"></a>1.支持动态查询</h3><blockquote>
+<p>在查询某个实体时，常常会出现给定条件不定的情况，需要构建动态查询语句。<br>Spring Data JPA可以通过JpaSpecificationExecutor接口查询。</p>
+</blockquote>
+<h4 id="Specification"><a href="#Specification" class="headerlink" title="Specification"></a>Specification</h4><ol>
+<li>Specification是规约模式，常在DDD中使用。将业务规则封装成独立的逻辑单元，从而将隐式业务规则提炼为显示概念达到代码复用的目的。</li>
+</ol>
+<ul>
+<li>可以用于业务规则的抽象</li>
+<li>可以用于数据查询</li>
+</ul>
+<ol start="2">
+<li>如何实现规约模式</li>
+</ol>
+<ul>
+<li>每条规约实现四个方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ISpecification</span>&lt;T&gt;    &#123;</span><br><span class="line">    bool <span class="title function_">IsSatisfiedBy</span><span class="params">(T o)</span>;</span><br><span class="line">    ISpecification&lt;T&gt; <span class="title function_">And</span><span class="params">(ISpecification&lt;T&gt; specification)</span>;</span><br><span class="line">    ISpecification&lt;T&gt; <span class="title function_">Or</span><span class="params">(ISpecification&lt;T&gt; specification)</span>;</span><br><span class="line">    ISpecification&lt;T&gt; <span class="title function_">Not</span><span class="params">(ISpecification&lt;T&gt; specification)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>IsSatisfied用于实现业务规则，其余用于复合业务逻辑</li>
+</ul>
+<h4 id="JPA中动态查询的实现"><a href="#JPA中动态查询的实现" class="headerlink" title="JPA中动态查询的实现"></a>JPA中动态查询的实现</h4><ol>
+<li>实现Specification类，定义相关的查询条件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StoreSpecification</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Specification&lt;Store&gt; <span class="title function_">searchInStore</span><span class="params">(<span class="type">boolean</span> sortedBySales,String category,String name)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Root&lt;Store&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder builder)-&gt;&#123;</span><br><span class="line">            List&lt;Predicate&gt; predicates=<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">            <span class="keyword">if</span>(category!=<span class="literal">null</span>&amp;&amp;!category.trim().isEmpty()&amp;&amp;!category.equals(<span class="string">&quot;ALL&quot;</span>))&#123;</span><br><span class="line">                predicates.add(builder.equal(root.get(<span class="string">&quot;category&quot;</span>), StoreEnum.valueOf(category)));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(name!=<span class="literal">null</span>&amp;&amp;!name.trim().isEmpty())&#123;</span><br><span class="line">                predicates.add(builder.like(root.get(<span class="string">&quot;name&quot;</span>),<span class="string">&quot;%&quot;</span>+name+<span class="string">&quot;%&quot;</span>));</span><br><span class="line">            &#125;</span><br><span class="line">            query.where(predicates.toArray(<span class="keyword">new</span> <span class="title class_">Predicate</span>[<span class="number">0</span>]));</span><br><span class="line">            <span class="keyword">if</span>(sortedBySales)&#123;</span><br><span class="line">                query.orderBy(builder.desc(root.get(<span class="string">&quot;sales&quot;</span>)));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> builder.and(predicates.toArray(<span class="keyword">new</span> <span class="title class_">Predicate</span>[<span class="number">0</span>]));</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>Specification<Store>是JPA提供的接口，用于动态构建查询条件；常与JpaSpecificationExecutor一起使用</li>
+<li>Root是查询的根对象，即实体类。</li>
+<li>CriteriaQuery&lt;?&gt;是一个JPA查询对象，用于定义查询结构</li>
+<li>Predicate表示查询条件</li>
+</ul>
+<ol start="2">
+<li>使用动态的查询条件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Specification&lt;Store&gt; spec= StoreSpecification.searchInStore(sortedBySales,category,name);</span><br><span class="line">Page&lt;Store&gt; storeList=storeRepository.findAll(spec,PageRequest.of(pageNum-<span class="number">1</span>,size));</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/21/projects/JWT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
+      <meta itemprop="name" content="Xuzhanghan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Han's Blog">
+      <meta itemprop="description" content="NJU">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Han's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/21/projects/JWT/" class="post-title-link" itemprop="url">JWT</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-21 14:25:49 / 修改时间：15:00:28" itemprop="dateCreated datePublished" datetime="2025-03-21T14:25:49+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">项目开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JWT（JSON-Web令牌）"><a href="#JWT（JSON-Web令牌）" class="headerlink" title="JWT（JSON Web令牌）"></a>JWT（JSON Web令牌）</h1><p>参考：<a target="_blank" rel="noopener" href="https://jwt.p2hp.com/introduction%EF%BC%8Chttps://blog.csdn.net/Top_L398/article/details/109361680">https://jwt.p2hp.com/introduction，https://blog.csdn.net/Top_L398/article/details/109361680</a></p>
+<h2 id="01-什么是JWT？"><a href="#01-什么是JWT？" class="headerlink" title="01 什么是JWT？"></a>01 什么是JWT？</h2><h3 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h3><blockquote>
+<p>JWT是一种开放标准，定义了一种紧凑且独立的方式，用于在各方之间以JSON对象的形式安全传输信息。此信息是可以验证和信任的，因为它经过了数字签名。JWT可以使用密钥（HMAC算法）或RSA或ECDA的公钥&#x2F;私钥对进行签名。</p>
+</blockquote>
+<p>即通过JSON形式作为Web应用中的令牌，从而在各方之间安全地将信息作为JSON对象传输，传输过程中还可以完成数据加密、签名等  </p>
+<h3 id="2-JWT结构"><a href="#2-JWT结构" class="headerlink" title="2. JWT结构"></a>2. JWT结构</h3><p>JWT由三部分组成，由点’.’分隔，形如xxxxx.yyyyy.zzzzz</p>
+<ol>
+<li>Header, 标头：包括令牌的类型和使用的签名算法（如RSA)<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;HS256&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span> <span class="string">&quot;JWT&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></li>
+<li>Payload, 有效荷载</li>
+<li>Signature, 签名</li>
+</ol>
+<h2 id="02-JWT的使用场景"><a href="#02-JWT的使用场景" class="headerlink" title="02 JWT的使用场景"></a>02 JWT的使用场景</h2><h3 id="1-授权"><a href="#1-授权" class="headerlink" title="1. 授权"></a>1. 授权</h3><ol>
+<li>授权是JWT使用最广泛的场景，用户登录后的每个请求都将包含JWT，允许用户访问该令牌允许的路由、服务和资源。单点登录就使用了JWT，它开销很小并且可以轻松地跨域使用。</li>
+</ol>
+<ul>
+<li>补充：单点登录（SSO)是一种用户身份验证过程，允许用户在多个应用程序或服务之间无缝访问，无需为每个应用单独登录。 比如：一个公司采取单点登录系统，提供了邮件系统、项目平台、文档平台，实现<br>单点登录后，先访问公司的单点登录门户网站注册并登录，之后当你希望登录邮件系统时，会被重定向到单点登录门户，会自动识别身份无需重复登录。</li>
+</ul>
+<h3 id="2-信息交换"><a href="#2-信息交换" class="headerlink" title="2. 信息交换"></a>2. 信息交换</h3><ol>
+<li>JWT是在各方之间安全传输信息的好方法。因为 JWT 可以签名——例如，使用公钥&#x2F;私钥对——你可以确定发送者是他们所说的人。此外，由于签名是使用标头和有效负载计算的，因此您还可以验证内容是否未被篡改.</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/17/my-study/llm-copyright-and-compilence/review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
+      <meta itemprop="name" content="Xuzhanghan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Han's Blog">
+      <meta itemprop="description" content="NJU">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Han's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/17/my-study/llm-copyright-and-compilence/review/" class="post-title-link" itemprop="url">文献综述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-17 21:17:38" itemprop="dateCreated datePublished" datetime="2025-03-17T21:17:38+08:00">2025-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-21 14:27:53" itemprop="dateModified" datetime="2025-03-21T14:27:53+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E6%88%90%E5%BC%8FAI%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/" itemprop="url" rel="index"><span itemprop="name">生成式AI安全合规</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%94%9F%E6%88%90%E5%BC%8FAI%E5%AE%89%E5%85%A8%E5%90%88%E8%A7%84/%E7%B3%BB%E7%BB%9F%E6%96%87%E7%8C%AE%E7%BB%BC%E8%BF%B0/" itemprop="url" rel="index"><span itemprop="name">系统文献综述</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="生成式AI安全合规"><a href="#生成式AI安全合规" class="headerlink" title="生成式AI安全合规"></a>生成式AI安全合规</h1><blockquote>
+<p>针对生成式AI安全合规这一主题，本文主要探讨的问题是“⽣成内容版权与许可证合规的评测⽅法有哪些”</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/17/algorithms/PrefixSum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
+      <meta itemprop="name" content="Xuzhanghan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Han's Blog">
+      <meta itemprop="description" content="NJU">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Han's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/17/algorithms/PrefixSum/" class="post-title-link" itemprop="url">前缀和</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-17 16:39:28" itemprop="dateCreated datePublished" datetime="2025-03-17T16:39:28+08:00">2025-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-21 14:29:58" itemprop="dateModified" datetime="2025-03-21T14:29:58+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
         </span>
     </span>
 
@@ -361,7 +667,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-08-28 09:17:32" itemprop="dateModified" datetime="2024-08-28T09:17:32+08:00">2024-08-28</time>
+      <time title="修改时间：2025-03-21 14:29:17" itemprop="dateModified" datetime="2025-03-21T14:29:17+08:00">2025-03-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -369,7 +675,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/start/" itemprop="url" rel="index"><span itemprop="name">start</span></a>
+          <a href="/categories/%E5%BC%80%E5%A7%8B/" itemprop="url" rel="index"><span itemprop="name">开始</span></a>
         </span>
     </span>
 
