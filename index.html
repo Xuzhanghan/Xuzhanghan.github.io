@@ -152,7 +152,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -197,6 +197,173 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/21/projects/miaosha/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://box.nju.edu.cn/f/12bc070d8df04ce2be5b/?dl=1">
+      <meta itemprop="name" content="Xuzhanghan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Han's Blog">
+      <meta itemprop="description" content="NJU">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Han's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/03/21/projects/miaosha/" class="post-title-link" itemprop="url">商城秒杀</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-03-21 22:11:33" itemprop="dateCreated datePublished" datetime="2025-03-21T22:11:33+08:00">2025-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-03-23 11:42:53" itemprop="dateModified" datetime="2025-03-23T11:42:53+08:00">2025-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">项目开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="商城秒杀"><a href="#商城秒杀" class="headerlink" title="商城秒杀"></a>商城秒杀</h1><p>参考文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/602162593">https://zhuanlan.zhihu.com/p/602162593</a></p>
+<h2 id="01-秒杀的需求"><a href="#01-秒杀的需求" class="headerlink" title="01.秒杀的需求"></a>01.秒杀的需求</h2><h3 id="一、关于ID"><a href="#一、关于ID" class="headerlink" title="一、关于ID"></a>一、关于ID</h3><ol>
+<li>是否能像普通业务一样使用自增的Id?<br>答案是不能，主要原因有以下两个</li>
+</ol>
+<ul>
+<li>自增的Id太有规律性，会向用户暴露信息：当前一段时间内没有其他顾客下单</li>
+<li>秒杀时订单量庞大，可能达到几百万甚至更多，Mysql数据库是不可能在一张表中存放如此多的数据的。但是如果拆成多张表后还是用自增的Id,会导致订单出现重复的Id，这是不符合业务逻辑的。</li>
+</ul>
+<ol start="2">
+<li>如何解决以上问题？<br>需要一个全局ID生成器（一种在分布式系统下用来生成全局唯一ID的工具），满足：</li>
+</ol>
+<ul>
+<li>唯一性</li>
+<li>高性能</li>
+<li>高可用</li>
+<li>递增性</li>
+<li>安全性</li>
+</ul>
+<ol start="3">
+<li>如何实现全局ID生成器？<br>（1）一<br>使用Redis的自增技术并与其他进行拼接：<br>符号位+时间戳+序列号</li>
+</ol>
+<ul>
+<li>利用redis的increment:string RedisTemplate.opsForValue()<br>.increment(“icr:” + keyPrefix + “:” + date);一天生成一个key</li>
+<li>timestamp+计数器<br>（2）<br>UUID：用于在分布式系统中生成唯一的标识。它是一个128位的数字，通常以32个十六进制数字的形式表示，并通过分组和连字符分隔，例如：123e4567-e89b-12d3-a456-426614174000  </li>
+<li>版本1（基于时间）：使用时间戳和设备的MAC地址生成。这种版本的UUID可以反映生成的时间顺序，但可能会暴露设备的MAC地址，存在一定的隐私问题。</li>
+<li>版本2（基于DCE安全）：与版本1类似，但加入了POSIX UID&#x2F;GID信息，主要用于分布式计算环境（DCE）。</li>
+<li>版本3（基于名称的MD5散列）：通过将一个命名空间的UUID和一个名称进行MD5散列生成。它适用于需要根据特定名称生成唯一标识的场景。</li>
+<li>版本4（随机生成）：完全由随机数或伪随机数生成。这是最常用的版本，因为它简单且不依赖于外部信息。</li>
+<li>版本5（基于名称的SHA-1散列）：与版本3类似，但使用SHA-1散列算法。它比版本3更安全，因为SHA-1比MD5更难被破解。</li>
+</ul>
+<h3 id="超卖问题"><a href="#超卖问题" class="headerlink" title="超卖问题"></a>超卖问题</h3><p>为什么会产生超卖？</p>
+<ul>
+<li>两个及以上线程同时访问并对数据进行修改<br><img src="https://pic2.zhimg.com/v2-175e9ccc3ba3e21f7c75f6da0650f181_1440w.jpg"></li>
+</ul>
+<h4 id="1-如何解决超卖问题？（典型的多线程安全问题）"><a href="#1-如何解决超卖问题？（典型的多线程安全问题）" class="headerlink" title="1.如何解决超卖问题？（典型的多线程安全问题）"></a>1.如何解决超卖问题？（典型的多线程安全问题）</h4><p>加锁！</p>
+<ol>
+<li>锁：</li>
+</ol>
+<ul>
+<li>悲观锁：认为线程安全问题一定会发生，在操作数据前一定会先获取锁，确保线程串行执行，如synchronized,lock。</li>
+<li>乐观锁：认为线程安全问题不一定会发生，不加锁，只有在更新数据时才判断有没有其他线程对数据进行了修改。</li>
+</ul>
+<ol start="2">
+<li>悲观锁：<br>（1）java中最常用的锁就是synchronized关键字,对方法或者代码块进行同步。但是可能导致线程阻塞影响性能、锁粒度过大。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> Boolean <span class="title function_">deleteOrdersById</span><span class="params">(<span class="type">int</span> orderId)</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123; <span class="comment">// 对整个方法加锁</span></span><br><span class="line">        <span class="type">Orders</span> <span class="variable">orders</span> <span class="operator">=</span> ordersRepository.findById(orderId);</span><br><span class="line">        <span class="type">Good</span> <span class="variable">good</span> <span class="operator">=</span> goodRepository.findById(orders.getGoodId());</span><br><span class="line">        good.setStorage(good.getStorage() + orders.getSoldNum());</span><br><span class="line">        goodRepository.save(good);</span><br><span class="line">        ordersRepository.deleteById(orderId);</span><br><span class="line">        orderReportRepository.deleteById(orderId);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>可以直接在方法前加该关键字，整个方法都会同步。注意：对于非静态，创建不同的对象后即使方法前有synchronized关键字也无法同步，因为属于不同对象就创建了不同对象锁。</li>
+<li>也可以只对代码块同步，减少粒度  </li>
+<li><strong>实现原理</strong>：是基于JVM的内置锁，也被称为互斥锁。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/377423211">https://zhuanlan.zhihu.com/p/377423211</a><ul>
+<li>Java中每个对象都有一个对象头，包含其元数据（哈希码、锁信息等）。</li>
+<li>即MarkWord:存储哈希码、锁标记位等</li>
+<li>ClassMetadataAddress,存储到对象类型数据的指针</li>
+<li>ArrayLength: 数组长度</li>
+<li>JVM通过进入和退出Monitor（管程）实现</li>
+<li>1.6后优化，因为之前的涉及用户态与内核态的转换，加入无、偏向、轻量级、重量级<br><em>事实上，很多项目都不是单例模式，方法也不会定义成静态，所以直接用synchronized并没有用，可以采取把synchronized加到controller层，serviceImpl加上@Transactional注解</em><br>（2）Lock</li>
+<li>Lock()</li>
+<li>tryLock()</li>
+<li>unLock()</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>乐观锁：<br>（1）添加版本号</li>
+</ol>
+<ul>
+<li>每扣减一次更改一下版本号，每次扣减之前查询版本号，只有在扣减时的版本号与之前版本号相同时才扣减<br>（2）CAS法</li>
+<li>CAS操作包含三个操作数，内存位置、预期原值、新值</li>
+<li>传统做法：如果内存位置V等于预期原值，就将其更新为新值；否则不操作</li>
+<li>优化后，判断内存位置是否为零</li>
+</ul>
+<h4 id="一人一单（一个用户只可以购买一单）"><a href="#一人一单（一个用户只可以购买一单）" class="headerlink" title="一人一单（一个用户只可以购买一单）"></a>一人一单（一个用户只可以购买一单）</h4><p>在扣除库存前需要先去查找数据库中是否已经有该用户的订单，再去决定是否扣除。但是，这里分成了两步，可能引发线程安全问题。</p>
+<ul>
+<li>一方面查询是否已经有订单</li>
+<li>另一方面，订单可能还没写入:锁住用户<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (userId.toString().intern()) &#123;</span><br><span class="line">    ......</span><br><span class="line">   createVoucherOrder(voucherId);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong>需要分布式锁</strong></li>
+</ul>
+<ol>
+<li>基于Redis的分布式锁</li>
+</ol>
+<ul>
+<li>获取锁（设置key)</li>
+<li>释放锁（删除key),为key设置一个超时时间，每个线程只能释放自己的</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://xuzhanghan.github.io/2025/03/21/projects/JPA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -227,7 +394,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-03-21 16:56:23 / 修改时间：17:50:39" itemprop="dateCreated datePublished" datetime="2025-03-21T16:56:23+08:00">2025-03-21</time>
+      <time title="创建时间：2025-03-21 16:56:23 / 修改时间：18:00:32" itemprop="dateCreated datePublished" datetime="2025-03-21T16:56:23+08:00">2025-03-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -282,6 +449,21 @@
 <ol start="2">
 <li>使用动态的查询条件<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Specification&lt;Store&gt; spec= StoreSpecification.searchInStore(sortedBySales,category,name);</span><br><span class="line">Page&lt;Store&gt; storeList=storeRepository.findAll(spec,PageRequest.of(pageNum-<span class="number">1</span>,size));</span><br></pre></td></tr></table></figure></li>
 </ol>
+<h2 id="02-分页机制"><a href="#02-分页机制" class="headerlink" title="02 分页机制"></a>02 分页机制</h2><h3 id="1-分页机制概念"><a href="#1-分页机制概念" class="headerlink" title="1. 分页机制概念"></a>1. 分页机制概念</h3><ol>
+<li>分页机制包括</li>
+</ol>
+<ul>
+<li>分页参数（页码、页的大小）</li>
+<li>分页结果（数据列表，总记录数，总页数）</li>
+</ul>
+<ol start="2">
+<li>JPA中的分页机制</li>
+</ol>
+<ul>
+<li>Pageable接口，封装分页的参数：常用PageRequest类构建该对象</li>
+<li>Page接口，封装分页查询结果</li>
+<li>Sort，对分页结果排序</li>
+</ul>
 
       
     </div>
